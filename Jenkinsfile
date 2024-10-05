@@ -8,15 +8,15 @@ pipeline {
             }
         }
 
-    
         stage('Run Docker Compose on Localhost') {
             steps {
                 script {
                     // Start the Docker Compose services on localhost
-                    sh 'echo "pipline done "'
+                    sh 'echo "pipeline done"'
                 }
             }
         }
-    }
+    } // Close the stages block
+} // Close the pipeline block
 
 
