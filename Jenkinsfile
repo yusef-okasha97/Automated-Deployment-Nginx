@@ -13,7 +13,6 @@ pipeline {
             steps {
                 script {
                     // Start the Docker Compose services on localhost
-                    sh 'docker-compose -f docker-compose.yml up -d'
                     sh 'echo "pipline done "'
                 }
             }
