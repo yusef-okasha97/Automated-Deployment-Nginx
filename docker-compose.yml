@@ -1,5 +1,6 @@
 version: "3"
 services:
+  # Database layer for WordPress
   mysql_database:
     image: mysql
     restart: always
@@ -7,24 +8,36 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: wp_db
       MYSQL_USER: wp_user
-      MYSQL_PASSWORD: 1234  # Fixed typo here
+      MYSQL_PASSWORD: 1234
     volumes:
-      - mysql:/var/lib/mysql
+      - mysql:/var/lib/mysql  # Fixed volume mapping
 
   wordpress:
     depends_on:
       - mysql_database
-    image: wordpress:latest  # Fixed image syntax here
+    image: wordpress:latest
     restart: always
     ports:
-      - "8000:80"  # Fixed port syntax
+      - "8000:80"
     environment:
       WORDPRESS_DB_HOST: mysql_database:3306
       WORDPRESS_DB_USER: wp_user
       WORDPRESS_DB_PASSWORD: 1234
       WORDPRESS_DB_NAME: wp_db
     volumes:
-       ["./:/var/www/html"] # Fixed volume syntax here
+      - ./:/var/www/html  # Corrected volume mapping
+
+  # Image for phpMyAdmin
+  phpmyadmin:
+    depends_on:
+      - mysql_database
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "9090:80"
+    environment:
+      PMA_HOST: mysql_database
+      MYSQL_ROOT_PASSWORD: 1234 
 
 volumes:
-  mysql: {}
+  mysql: {}  # Volume definition
