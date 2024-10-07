@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_CREDENTIALS_ID = 'Docker-token' // Add your Docker Hub credentials ID here
-    }
-
     stages {
         stage('Clone Repository') {
             steps {
@@ -17,17 +13,6 @@ pipeline {
                 script {
                     // Build the Docker images defined in your Docker Compose file
                     sh 'docker-compose -f docker-compose.yml build'
-                }
-            }
-        }
-
-        stage('Push to Docker Hub') {
-            steps {
-                script {
-                    // Log in to Docker Hub
-                    withDockerRegistry([credentialsId: DOCKER_CREDENTIALS_ID]) {
-                        sh 'docker-compose -f docker-compose.yml push'
-                    }
                 }
             }
         }
