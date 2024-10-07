@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/yusef-okasha97/Automated-Deployment-Pipeline-with-Jenkins-and-Docker.git',branch:'main',credentialsId: 'GitHub-Token'
+                git url: 'https://github.com/yusef-okasha97/Automated-Deployment-Pipeline-with-Jenkins-and-Docker.git', branch: 'main', credentialsId: 'GitHub-Token'
             }
         }
 
@@ -21,11 +21,11 @@ pipeline {
             }
         }
 
- stage('Push to Docker Hub') {
+        stage('Push to Docker Hub') {
             steps {
                 script {
                     // Log in to Docker Hub
-                    withDockerRegistry([credentialsId: Docker-token]) {
+                    withDockerRegistry([credentialsId: DOCKER_CREDENTIALS_ID]) {
                         sh 'docker-compose -f docker-compose.yml push'
                     }
                 }
@@ -49,4 +49,3 @@ pipeline {
         }
     }
 }
-
