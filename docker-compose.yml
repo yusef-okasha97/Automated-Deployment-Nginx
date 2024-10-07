@@ -1,4 +1,3 @@
-version: "3"
 services:
   # Database layer for WordPress
   mysql_database:
