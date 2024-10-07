@@ -25,13 +25,12 @@ pipeline {
                 }
             }
         }
+    }
 
-post {
+    post {
         always {
             // Clean up the Docker environment after the pipeline run
             sh 'docker-compose -f docker-compose.yml down'
         }
     }
-    }
-
 }
