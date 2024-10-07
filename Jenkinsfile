@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'Docekr-hub' // Add your Docker Hub credentials ID here
+        DOCKER_CREDENTIALS_ID = 'Docker-token' // Add your Docker Hub credentials ID here
     }
 
     stages {
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // Log in to Docker Hub
-                    withDockerRegistry([credentialsId: Docekr-hub]) {
+                    withDockerRegistry([credentialsId: Docker-token]) {
                         sh 'docker-compose -f docker-compose.yml push'
                     }
                 }
