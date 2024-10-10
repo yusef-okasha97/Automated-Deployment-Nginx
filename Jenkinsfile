@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_HUB_CREDENTIALS = credentials('Docker-token') // Replace with your Jenkins credentials ID
-        IMAGE_NAME = 'yoyo7sniper97/wordpress' // Replace with your Docker Hub username and desired image name
-    }
-
     stages {
         stage('Clone Repository') {
             steps {
@@ -18,21 +13,6 @@ pipeline {
                 script {
                     // Build the Docker images defined in your Docker Compose file
                     sh 'docker-compose -f docker-compose.yml build'
-                }
-            }
-        }
-
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                script {
-                    // Log in to Docker Hub
-                    sh "echo '${DOCKER_HUB_CREDENTIALS.password}' | docker login -u '${DOCKER_HUB_CREDENTIALS.username}' --password-stdin"
-                    
-                    // Tag the image (ensure you use the correct local image name)
-                    sh " wordpress:latest ${IMAGE_NAME}:latest" // Replace with your actual local image name
-
-                    // Push the image to Docker Hub
-                    sh "docker push ${IMAGE_NAME}:latest"
                 }
             }
         }
