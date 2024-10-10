@@ -29,7 +29,7 @@ pipeline {
                     sh "echo '${DOCKER_HUB_CREDENTIALS.password}' | docker login -u '${DOCKER_HUB_CREDENTIALS.username}' --password-stdin"
                     
                     // Tag the image (ensure you use the correct local image name)
-                    sh "docker tag your-local-image-name:latest ${IMAGE_NAME}:latest" // Replace with your actual local image name
+                    sh " wordpress:latest ${IMAGE_NAME}:latest" // Replace with your actual local image name
 
                     // Push the image to Docker Hub
                     sh "docker push ${IMAGE_NAME}:latest"
