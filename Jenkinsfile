@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'vm2' }
+    agent { label 'vm2' }  // Specify the agent label correctly
 
     stages {
         stage('Clone Repository') {
@@ -27,4 +27,12 @@ pipeline {
         }
     }
 
+    post {
+        always {
+            // Clean up the Docker environment after the pipeline run
+            script {
+                sh 'docker-compose -f docker-compose.yml down'
+            }
+        }
+    }
 }
