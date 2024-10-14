@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // Specify the agent label correctly
+    agent { label 'vm2' }  // Specify the agent label for VM2
 
     stages {
         stage('Clone Repository') {
@@ -11,7 +11,6 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    // Build the Docker images defined in your Docker Compose file
                     sh 'docker-compose -f docker-compose.yml build'
                 }
             }
@@ -20,7 +19,6 @@ pipeline {
         stage('Run Docker Compose on Localhost') {
             steps {
                 script {
-                    // Start the Docker Compose services on localhost
                     sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
@@ -29,7 +27,6 @@ pipeline {
 
     post {
         always {
-            // Clean up the Docker environment after the pipeline run
             script {
                 sh 'docker-compose -f docker-compose.yml down'
             }
