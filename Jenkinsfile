@@ -29,8 +29,8 @@ pipeline {
         always {
             script {
                 sh 'docker-compose -f docker-compose.yml down'
-                sh 'sudo rm -rf wordpress\ app/'
-                sh 'sudo rm -rf wordpress\ app@tmp/'
+                sh 'rm -rf wordpress\ app/'
+                sh 'rm -rf wordpress\ app@tmp/'
             }
         }
     }
