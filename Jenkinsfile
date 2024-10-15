@@ -27,8 +27,8 @@ pipeline {
         stage('Copy index.html to Nginx Container') {
             steps {
                 script {
-                    // Replace 'nginx_nginx_1' with your actual container name
-                    sh 'docker cp html/index.html nginx_nginx_1:/usr/share/nginx/html/index.html'
+                    // Replace 'nginx' with your actual container name
+                    sh 'docker cp index.html nginx:/usr/share/nginx/html/index.html'
                 }
             }
         }
