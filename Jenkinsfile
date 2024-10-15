@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     // Replace 'nginx' with your actual container name
-                    sh 'docker cp index.html nginx:/usr/share/nginx/html/index.html'
+                    sh 'cp index.html nginx:/var/jenkins_home/workspace/Nginx/html/index.html'
                 }
             }
         }
