@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   nginx:
     image: nginx:latest
@@ -6,3 +7,4 @@ services:
       - "80:80"  # Map port 80 on the host to port 80 in the container
     volumes:
       - ./html:/usr/share/nginx/html  # Map local html directory to container
+    restart: always  # Ensure the container always restarts
