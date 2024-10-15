@@ -11,7 +11,8 @@ pipeline {
  stage('copy index file') {
             steps {
                 script {
-                    sh 'cp index.html  /var/jenkins_home/workspace/Nginx/html/index.html'
+                    sh 'docker cp index.html nginx:/usr/share/nginx/html/index.html
+'
                 }
             }
         }
