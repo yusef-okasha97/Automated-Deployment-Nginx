@@ -8,6 +8,14 @@ pipeline {
             }
         }
 
+ stage('copy index file') {
+            steps {
+                script {
+                    sh ' cp index.html  /var/jenkins_home/workspace/Nginx/html'
+                }
+            }
+        }
+
         stage('Build Docker Images') {
             steps {
                 script {
