@@ -11,7 +11,7 @@ pipeline {
  stage('copy index file') {
             steps {
                 script {
-                    sh ' cp index.html  /var/jenkins_home/workspace/Nginx/html/index.html'
+                    sh 'cp index.html  /var/jenkins_home/workspace/Nginx/html/index.html'
                 }
             }
         }
