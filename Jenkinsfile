@@ -8,15 +8,6 @@ pipeline {
             }
         }
 
- stage('copy index file') {
-            steps {
-                script {
-                    sh 'docker cp index.html nginx:/usr/share/nginx/html/index.html
-'
-                }
-            }
-        }
-
         stage('Build Docker Images') {
             steps {
                 script {
@@ -32,6 +23,21 @@ pipeline {
                 }
             }
         }
+
+        stage('Copy index.html to Nginx Container') {
+            steps {
+                script {
+                    // Replace 'nginx_nginx_1' with your actual container name
+                    sh 'docker cp html/index.html nginx_nginx_1:/usr/share/nginx/html/index.html'
+                }
+            }
+        }
     }
 
+    post {
+        always {
+            echo 'Pipeline finished.'
+        }
+    }
 }
+
