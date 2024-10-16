@@ -1,15 +1,14 @@
 # Automated-Deployment-Pipeline-with-Jenkins-and-Docker
 Develop a pipeline to automate the build, testing, and deployment of a sample application. Utilize Jenkins for continuous integration, Docker for containerization, and Ansible for configuration management. Implement automated testing and deployment to a cloud environment.
 
-# first you need install jenkins 
+# first you need to install Docker on the local machine  
 ```
-Step 1: Update Your Package Index
+## Step 1: Update Your Package Index
 Open your terminal and run:
 
-```
-sudo apt update
-```
-Step 2: Install Required Packages
+```sudo apt update```
+
+##Step 2: Install Required Packages
 Install packages that allow apt to use repositories over HTTPS:
 
 ```
