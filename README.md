@@ -52,7 +52,7 @@ Check if Docker is installed correctly by running:
 sudo docker --version
 ```
 
-## Step 9: (Optional) Manage Docker as a Non-Root User
+## Step 9: Manage Docker as a Non-Root User
 To run Docker commands without sudo, add your user to the docker group:
 
 ```
