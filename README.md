@@ -63,5 +63,6 @@ You will need to log out and back in for the group change to take effect.
 ## Step 10: Test Docker
 Finally, test your Docker installation with:
 
-
+```
 docker run hello-world
+```
