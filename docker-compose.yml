@@ -3,6 +3,7 @@ version: '3.8'
 services:
   nginx:
     image: nginx:latest
+    container_name: nginx  # Set the name of the container to 'nginx'
     ports:
       - "80:80"  # Map port 80 on the host to port 80 in the container
     volumes:
