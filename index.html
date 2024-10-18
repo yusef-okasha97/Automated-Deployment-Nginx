@@ -1,153 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+
     <title>Snake Game</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
+            background-color:   
+ #f0f0f0;
+            font-family: Arial, sans-serif;
         }
         canvas {
             display: block;
+            background-color: #fff;
+        }
+        #word {
+            position: absolute;
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff0000;
+            text-align: center;
             width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: block;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
+
     <canvas id="gameCanvas"></canvas>
+    <div id="word">SNAKE</div>
+
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
 
-        // Game   
- dimensions
-        const gameWidth = 600;
-        const gameHeight = 400;
+        // Set canvas to full screen
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        // Snake parameters
-        const snakeWidth = 20;
-        const snakeHeight = 20;
-        let snakeX = gameWidth / 2;
-        let snakeY = gameHeight / 2;
-        let snakeDirection = 'right'; // 'up', 'down', 'left', 'right'
-
-        // Food parameters
-        const foodWidth = snakeWidth;
-        const foodHeight = snakeHeight;
-        let foodX = Math.floor(Math.random() * (gameWidth - foodWidth)) + foodWidth;
-        let foodY = Math.floor(Math.random() * (gameHeight - foodHeight)) + foodHeight;
-
-        // Game state
-        let isGameOver = false;
+        const box = 20;
+        let snake = [{x: box * 5, y: box * 5}];
+        let direction = {x: box, y: 0};
+        let food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
         let score = 0;
 
-        // Draw the snake
-        function drawSnake() {
-            ctx.fillStyle = 'green';
-            ctx.fillRect(snakeX, snakeY, snakeWidth, snakeHeight);
-        }
+        document.addEventListener("keydown", changeDirection);
 
-        // Draw the food
-        function drawFood() {
-            ctx.fillStyle = 'red';
-            ctx.fillRect(foodX, foodY, foodWidth, foodHeight);
-        }
-
-        // Check for collisions
-        function checkCollisions() {
-            // Check for wall collisions
-            if (snakeX < 0 || snakeX >= gameWidth || snakeY < 0 || snakeY >= gameHeight) {
-                isGameOver = true;
-            }
-
-            // Check for food collision
-            if (snakeX === foodX && snakeY === foodY) {
-                score++;
-                generateFood();
+        function changeDirection(event) {
+            if (event.key === "ArrowUp" && direction.y === 0) {
+                direction = {x: 0, y: -box};
+            } else if (event.key === "ArrowDown" && direction.y === 0) {
+                direction = {x: 0, y: box};
+            } else if (event.key === "ArrowLeft" && direction.x === 0) {
+                direction = {x: -box, y: 0};
+            } else if (event.key === "ArrowRight" && direction.x === 0) {
+                direction = {x: box, y: 0};
             }
         }
 
-        // Generate new food
-        function generateFood() {
-            foodX = Math.floor(Math.random() * (gameWidth - foodWidth)) + foodWidth;
-            foodY = Math.floor(Math.random() * (gameHeight - foodHeight)) + foodHeight;
-        }
-
-        // Update the game state
-        function update() {
-            if (!isGameOver) {
-                switch (snakeDirection) {
-                    case 'up':
-                        snakeY -= snakeHeight;
-                        break;
-                    case 'down':
-                        snakeY += snakeHeight;
-                        break;
-                    case 'left':
-                        snakeX -= snakeWidth;
-                        break;
-                    case 'right':
-                        snakeX += snakeWidth;
-                        break;
-                }
-                checkCollisions();
-            }
-        }
-
-        // Draw the game elements
         function draw() {
-            ctx.clearRect(0, 0, gameWidth, gameHeight);
-            drawSnake();
-            drawFood();
-            ctx.fillStyle = 'white';
-            ctx.font = '20px Arial';
-            ctx.fillText('Score: ' + score, 10, 30);
-            if (isGameOver) {
-                ctx.fillText('Game Over', gameWidth / 2 - 50, gameHeight / 2);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw snake (using rectangles for simplicity)
+            for (let i = 0; i < snake.length; i++) {
+                ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head is darker
+                ctx.fillRect(snake[i].x, snake[i].y, box, box);
+                ctx.strokeStyle = "darkgreen";
+                ctx.strokeRect(snake[i].x, snake[i].y, box, box);
             }
+
+            // Draw food
+            ctx.fillStyle = "red";
+            ctx.fillRect(food.x,   
+ food.y, box, box);
+
+            // Move snake
+            let snakeX = snake[0].x   
+ + direction.x;
+            let snakeY = snake[0].y + direction.y;
+
+            if (snakeX === food.x && snakeY === food.y) {
+                score++;
+                food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
+            } else {
+                snake.pop();   
+
+            }
+
+            const newHead = {x: snakeX, y: snakeY};   
+
+            snake.unshift(newHead);
+
+            // Check collision with walls or itself
+            if (snakeX < 0 || snakeY < 0 || snakeX >= canvas.width || snakeY >= canvas.height || collision(newHead)) {
+                clearInterval(game);
+                alert("Game Over! Your score: " + score);
+                document.location.reload();
+            }
+
+            document.getElementById("word").style.display = (score > 0) ? "none" : "block";
         }
 
-        // Game loop
-        function gameLoop() {
-            update();
-            draw();
-            if (!isGameOver) {
-                requestAnimationFrame(gameLoop);
+        function collision(head) {
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    return true;
+                }
             }
+            return false;
         }
 
-        // Event listeners for keyboard input
-        document.addEventListener('keydown', (event) => {
-            switch (event.key) {
-                case 'ArrowUp':
-                    if (snakeDirection !== 'down') {
-                        snakeDirection = 'up';
-                    }
-                    break;
-                case 'ArrowDown':
-                    if (snakeDirection   
- !== 'up') {
-                        snakeDirection = 'down';
-                    }
-                    break;
-                case 'ArrowLeft':
-                    if (snakeDirection !== 'right') {
-                        snakeDirection = 'left';
-                    }
-                    break;
-                case 'ArrowRight':
-                    if (snakeDirection !== 'left') {
-                        snakeDirection = 'right';   
+        const game = setInterval(draw, 100);   
 
-                    }
-                    break;
-            }
+
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;   
+
+            food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
         });
-
-        // Start   
- the game
-        gameLoop();
     </script>
+
 </body>
 </html>
