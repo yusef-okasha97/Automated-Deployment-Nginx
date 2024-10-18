@@ -6,38 +6,47 @@
     <title>Snake Game</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            margin: 0;
+            overflow: hidden;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
         }
         canvas {
-            border: 1px solid #000;
+            display: block;
             background-color: #fff;
         }
         #word {
             position: absolute;
-            font-size: 24px;
+            font-size: 48px;
             font-weight: bold;
             color: #ff0000;
+            text-align: center;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: block;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
 
-<canvas id="gameCanvas" width="400" height="400"></canvas>
+<canvas id="gameCanvas"></canvas>
 <div id="word">SNAKE</div>
 
 <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
+    // Set canvas to full screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
     const box = 20;
     let snake = [{x: box * 5, y: box * 5}];
     let direction = {x: box, y: 0};
-    let food = {x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box};
+    let food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
     let score = 0;
 
     document.addEventListener("keydown", changeDirection);
@@ -57,9 +66,9 @@
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw snake
+        // Draw snake (using rectangles for simplicity)
         for (let i = 0; i < snake.length; i++) {
-            ctx.fillStyle = i === 0 ? "green" : "lightgreen";
+            ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head is darker
             ctx.fillRect(snake[i].x, snake[i].y, box, box);
             ctx.strokeStyle = "darkgreen";
             ctx.strokeRect(snake[i].x, snake[i].y, box, box);
@@ -75,7 +84,7 @@
 
         if (snakeX === food.x && snakeY === food.y) {
             score++;
-            food = {x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box};
+            food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
         } else {
             snake.pop();
         }
@@ -103,8 +112,14 @@
     }
 
     const game = setInterval(draw, 100);
+
+    // Resize canvas on window resize
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
+    });
 </script>
 
 </body>
 </html>
-
