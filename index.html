@@ -33,7 +33,7 @@
 <body>
 
 <canvas id="gameCanvas"></canvas>
-<div id="word">Depi,Devops track </div>
+<div id="word">SNAKE</div>
 
 <script>
     const canvas = document.getElementById("gameCanvas");
@@ -44,71 +44,41 @@
     canvas.height = window.innerHeight;
 
     const box = 20;
-    let snake = [{x: box * 5, y: box * 5}];
-    let direction = {x: box, y: 0};
-    let food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
-    let score = 0;
-
-    document.addEventListener("keydown", changeDirection);
-
-    function changeDirection(event) {
-        if (event.key === "ArrowUp" && direction.y === 0) {
-            direction = {x: 0, y: -box};
-        } else if (event.key === "ArrowDown" && direction.y === 0) {
-            direction = {x: 0, y: box};
-        } else if (event.key === "ArrowLeft" && direction.x === 0) {
-            direction = {x: -box, y: 0};
-        } else if (event.key === "ArrowRight" && direction.x === 0) {
-            direction = {x: box, y: 0};
-        }
-    }
+    let snake = [{x: canvas.width / 2, y: canvas.height / 2}];
+    let direction = {x: box, y: 0}; // Start moving to the right
+    let food = {x: canvas.width / 2 - box, y: canvas.height / 2}; // Place food next to the snake
+    let gameOver = false;
 
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Draw snake (using rectangles for simplicity)
-        for (let i = 0; i < snake.length; i++) {
-            ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head is darker
-            ctx.fillRect(snake[i].x, snake[i].y, box, box);
-            ctx.strokeStyle = "darkgreen";
-            ctx.strokeRect(snake[i].x, snake[i].y, box, box);
-        }
+        ctx.fillStyle = "green";
+        ctx.fillRect(snake[0].x, snake[0].y, box, box);
 
-        // Draw food
+        // Draw food (the word)
         ctx.fillStyle = "red";
         ctx.fillRect(food.x, food.y, box, box);
 
         // Move snake
-        let snakeX = snake[0].x + direction.x;
-        let snakeY = snake[0].y + direction.y;
+        snake[0].x += direction.x;
+        snake[0].y += direction.y;
 
-        if (snakeX === food.x && snakeY === food.y) {
-            score++;
-            food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
-        } else {
-            snake.pop();
+        // Check if the snake eats the food
+        if (snake[0].x === food.x && snake[0].y === food.y) {
+            alert("You ate the word! Game Over.");
+            gameOver = true;
         }
 
-        const newHead = {x: snakeX, y: snakeY};
-        snake.unshift(newHead);
+        // Check collision with walls
+        if (snake[0].x < 0 || snake[0].y < 0 || snake[0].x >= canvas.width || snake[0].y >= canvas.height) {
+            alert("Game Over! You hit a wall.");
+            gameOver = true;
+        }
 
-        // Check collision with walls or itself
-        if (snakeX < 0 || snakeY < 0 || snakeX >= canvas.width || snakeY >= canvas.height || collision(newHead)) {
+        if (gameOver) {
             clearInterval(game);
-            alert("Game Over! Your score: " + score);
-            document.location.reload();
         }
-
-        document.getElementById("word").style.display = (score > 0) ? "none" : "block";
-    }
-
-    function collision(head) {
-        for (let i = 1; i < snake.length; i++) {
-            if (head.x === snake[i].x && head.y === snake[i].y) {
-                return true;
-            }
-        }
-        return false;
     }
 
     const game = setInterval(draw, 100);
@@ -117,7 +87,7 @@
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
+        food = {x: canvas.width / 2 - box, y: canvas.height / 2}; // Center food after resize
     });
 </script>
 
