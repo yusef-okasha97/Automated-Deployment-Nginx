@@ -66,3 +66,18 @@ Finally, test your Docker installation with:
 ```
 docker run hello-world
 ```
+# Second we need to install Jenkins as a container 
+  ```
+ docker run -d -p 8080:8080 -p 5000:5000 -it  -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock --name jenkins --restart always -u root jenkins/jenkins:lts
+  ```
+  # Step 2: Installing Plugins via Jenkins Web UI, Access Jenkins Dashboard
+    Open your web browser and go to your Jenkins URL. It typically looks like http://localhost:8080 if running locally.
+    Log in using your Jenkins credentials.
+  # Navigate to the Plugin Manager:
+     From the Jenkins Dashboard, go to "Manage Jenkins" on the left side.
+    Click on "Manage Plugins".
+  # Search and Install Plugins:
+   Go to the Available tab to see all available plugins.
+   Use the search bar to find the plugin you want to install.
+   Check the checkbox next to the plugin.
+  Click on "Install without restart" to install the plugin right away, or "Download now and install after restart" if you prefer to install it after restarting Jenkins.
