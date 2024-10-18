@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // Specify the agent label for VM2
+    agent any  
 
     stages {
         stage('Clone Repository') {
@@ -35,8 +35,11 @@ pipeline {
     }
 
     post {
-        always {
-            echo 'Pipeline finished.'
+        success {
+            slackSend(channel: 'nginx', message: "Build ${env.BUILD_NUMBER} succeeded!")
+        }
+        failure {
+            slackSend(channel: 'nginx', message: "Build ${env.BUILD_NUMBER} failed!")
         }
     }
 }
