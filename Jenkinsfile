@@ -1,5 +1,5 @@
 pipeline {
-    agent any  
+    agent { label 'vm2' }
 
     stages {
         stage('Clone Repository') {
