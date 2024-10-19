@@ -2,132 +2,98 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
-
-    <title>Snake Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEPI Scholarship Track - DevOps Engineer</title>
     <style>
         body {
-            margin: 0;
-            overflow: hidden;
-            background-color:   
- #f0f0f0;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
-        canvas {
-            display: block;
-            background-color: #fff;
-        }
-        #word {
-            position: absolute;
-            font-size: 48px;
-            font-weight: bold;
-            color: #ff0000;
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
             text-align: center;
-            width: 100%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: block;
-            z-index: 1;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        section {
+            padding: 20px;
+            margin: 10px;
+            background: #fff;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #333;
+            color: #fff;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>DEPI Scholarship Track for DevOps Engineers</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#eligibility">Eligibility</a></li>
+                <li><a href="#application">Application Process</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <canvas id="gameCanvas"></canvas>
-    <div id="word">Depi, devops engineer</div>
+    <section id="about">
+        <h2>About the Scholarship</h2>
+        <p>The DEPI Scholarship Track aims to support aspiring DevOps engineers by providing them with the resources, mentorship, and education needed to succeed in the field.</p>
+    </section>
 
-    <script>
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
+    <section id="eligibility">
+        <h2>Eligibility Criteria</h2>
+        <ul>
+            <li>Must be pursuing a degree in Computer Science or related field.</li>
+            <li>Strong interest in DevOps practices and tools.</li>
+            <li>Demonstrated leadership skills and community involvement.</li>
+        </ul>
+    </section>
 
-        // Set canvas to full screen
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    <section id="application">
+        <h2>Application Process</h2>
+        <p>To apply for the DEPI Scholarship, please follow these steps:</p>
+        <ol>
+            <li>Complete the online application form.</li>
+            <li>Submit your resume and cover letter.</li>
+            <li>Provide two letters of recommendation.</li>
+        </ol>
+    </section>
 
-        const box = 20;
-        let snake = [{x: box * 5, y: box * 5}];
-        let direction = {x: box, y: 0};
-        let food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
-        let score = 0;
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>If you have any questions, feel free to reach out:</p>
+        <p>Email: <a href="mailto:info@depischolarship.org">info@depischolarship.org</a></p>
+    </section>
 
-        document.addEventListener("keydown", changeDirection);
-
-        function changeDirection(event) {
-            if (event.key === "ArrowUp" && direction.y === 0) {
-                direction = {x: 0, y: -box};
-            } else if (event.key === "ArrowDown" && direction.y === 0) {
-                direction = {x: 0, y: box};
-            } else if (event.key === "ArrowLeft" && direction.x === 0) {
-                direction = {x: -box, y: 0};
-            } else if (event.key === "ArrowRight" && direction.x === 0) {
-                direction = {x: box, y: 0};
-            }
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Draw snake (using rectangles for simplicity)
-            for (let i = 0; i < snake.length; i++) {
-                ctx.fillStyle = (i === 0) ? "green" : "lightgreen"; // Head is darker
-                ctx.fillRect(snake[i].x, snake[i].y, box, box);
-                ctx.strokeStyle = "darkgreen";
-                ctx.strokeRect(snake[i].x, snake[i].y, box, box);
-            }
-
-            // Draw food
-            ctx.fillStyle = "red";
-            ctx.fillRect(food.x,   
- food.y, box, box);
-
-            // Move snake
-            let snakeX = snake[0].x   
- + direction.x;
-            let snakeY = snake[0].y + direction.y;
-
-            if (snakeX === food.x && snakeY === food.y) {
-                score++;
-                food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
-            } else {
-                snake.pop();   
-
-            }
-
-            const newHead = {x: snakeX, y: snakeY};   
-
-            snake.unshift(newHead);
-
-            // Check collision with walls or itself
-            if (snakeX < 0 || snakeY < 0 || snakeX >= canvas.width || snakeY >= canvas.height || collision(newHead)) {
-                clearInterval(game);
-                alert("Game Over! Your score: " + score);
-                document.location.reload();
-            }
-
-            document.getElementById("word").style.display = (score > 0) ? "none" : "block";
-        }
-
-        function collision(head) {
-            for (let i = 1; i < snake.length; i++) {
-                if (head.x === snake[i].x && head.y === snake[i].y) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        const game = setInterval(draw, 100);   
-
-
-        // Resize canvas on window resize
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;   
-
-            food = {x: Math.floor(Math.random() * (canvas.width / box)) * box, y: Math.floor(Math.random() * (canvas.height / box)) * box};
-        });
-    </script>
-
+    <footer>
+        <p>&copy; 2024 DEPI Scholarship Track. All rights reserved.</p>
+    </footer>
 </body>
 </html>
