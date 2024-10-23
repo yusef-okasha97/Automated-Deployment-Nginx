@@ -63,7 +63,7 @@
         let dx, dy;
         let food;
         let score = 0;
-        let trials = 0; // Number of trials (games played)
+        let trials = localStorage.getItem('snakeGameTrials') ? parseInt(localStorage.getItem('snakeGameTrials')) : 0; // Number of trials (games played)
         const maxTrials = 3; // Maximum number of trials
 
         // Initialize the game
@@ -79,6 +79,7 @@
             dy = 0;
             score = 0;
             trials++; // Increment trials on each game start
+            localStorage.setItem('snakeGameTrials', trials); // Save the updated trials to local storage
 
             food = {
                 x: Math.floor(Math.random() * (tileCountX - 2)) + 1,
@@ -86,7 +87,12 @@
             };
         }
 
-        initializeGame(); // Initialize the first game
+        // Check trials on page load
+        if (trials >= maxTrials) {
+            alert('You have used all your trials. Please don\'t play again because now you load on the server. Leave a place for your other colleagues to try the game and tell us your opinion about the project in the comments and what we can add to it.');
+        } else {
+            initializeGame(); // Initialize the first game if trials are available
+        }
 
         function draw() {
             // Clear the canvas
@@ -157,8 +163,8 @@
                 } else {
                     // Show the final alert message after all trials are used
                     alert('You have used all your trials. Game Over!\n' +
-                          'Please don\'t play again because now you load on the server. ' +
-                          'Leave a place for your other colleagues to try the game and tell us your opinion about the project in the comments and what we can add to it.');
+                        'Please don\'t play again because now you load on the server. ' +
+                        'Leave a place for your other colleagues to try the game and tell us your opinion about the project in the comments and what we can add to it.');
                 }
             }
         }
