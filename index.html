@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fullscreen Snake Game</title>
+    <title>Snake Game with Frame</title>
     <style>
         body {
             margin: 0;
@@ -65,6 +65,11 @@
             ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            // Draw frame/border
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
             // Draw snake
             ctx.fillStyle = 'green';
             for (let i = 0; i < snake.length; i++) {
@@ -82,8 +87,8 @@
         }
 
         function checkCollision() {
-            // Check collision with walls
-            if (snake[0].x < 0 || snake[0].x >= tileCountX || snake[0].y < 0 || snake[0].y >= tileCountY) {
+            // Check collision with frame/borders (added 1 tile size to account for the frame)
+            if (snake[0].x < 1 || snake[0].x >= tileCountX - 1 || snake[0].y < 1 || snake[0].y >= tileCountY - 1) {
                 return true;
             }
 
@@ -103,8 +108,8 @@
             // Check if snake eats the food
             if (snake[0].x === food.x && snake[0].y === food.y) {
                 score++;
-                food.x = Math.floor(Math.random() * tileCountX);
-                food.y = Math.floor(Math.random() * tileCountY);
+                food.x = Math.floor(Math.random() * (tileCountX - 2)) + 1; // Ensure food doesn't spawn on frame
+                food.y = Math.floor(Math.random() * (tileCountY - 2)) + 1;
             } else {
                 snake.pop(); // Remove the tail
             }
