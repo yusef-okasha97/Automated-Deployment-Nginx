@@ -3,97 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEPI Scholarship Track - DevOps Engineer</title>
+    <title>Snake Game</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f0f0f0;
         }
 
-        header {
-            background: #333;
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin: 0 15px;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        section {
-            padding: 20px;
-            margin: 10px;
-            background: #fff;
-            border-radius: 5px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 10px 0;
-            background: #333;
-            color: #fff;
+        canvas {
+            border: 1px solid #000;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>DEPI Scholarship Track for DevOps Engineers</h1>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#eligibility">Eligibility</a></li>
-                <li><a href="#application">Application Process</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
 
-    <section id="about">
-        <h2>About the Scholarship</h2>
-        <p>The DEPI Scholarship Track aims to support aspiring DevOps engineers by providing them with the resources, mentorship, and education needed to succeed in the field.</p>
-    </section>
+        const box = 20;
+        let snake1 = [{x: 5 * box, y: 5 * box}];
+        let snake2 = [{x: 15 * box, y: 15 * box}];
+        let food = {};
+        let score1 = 0;
+        let score2 = 0;
+        let direction1 = {x: 0, y: 0};
+        let direction2 = {x: 0, y: 0};
 
-    <section id="eligibility">
-        <h2>Eligibility Criteria</h2>
-        <ul>
-            <li>Must be pursuing a degree in Computer Science or related field.</li>
-            <li>Strong interest in DevOps practices and tools.</li>
-            <li>Demonstrated leadership skills and community involvement.</li>
-        </ul>
-    </section>
+        function placeFood() {
+            food = {
+                x: Math.floor(Math.random() * (canvas.width / box)) * box,
+                y: Math.floor(Math.random() * (canvas.height / box)) * box
+            };
+        }
 
-    <section id="application">
-        <h2>Application Process</h2>
-        <p>To apply for the DEPI Scholarship, please follow these steps:</p>
-        <ol>
-            <li>Complete the online application form.</li>
-            <li>Submit your resume and cover letter.</li>
-            <li>Provide two letters of recommendation.</li>
-        </ol>
-    </section>
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw food
+            ctx.fillStyle = 'red';
+            ctx.fillRect(food.x, food.y, box, box);
+            
+            // Draw snake 1
+            ctx.fillStyle = 'green';
+            snake1.forEach(part => ctx.fillRect(part.x, part.y, box, box));
+            
+            // Draw snake 2
+            ctx.fillStyle = 'blue';
+            snake2.forEach(part => ctx.fillRect(part.x, part.y, box, box));
+            
+            // Move snake 1
+            let head1 = {x: snake1[0].x + direction1.x * box, y: snake1[0].y + direction1.y * box};
+            snake1.unshift(head1);
+            
+            // Check for food collision for snake 1
+            if (head1.x === food.x && head1.y === food.y) {
+                score1++;
+                placeFood();
+            } else {
+                snake1.pop();
+            }
+            
+            // Move snake 2 towards snake 1
+            let head2 = {x: snake2[0].x + direction2.x * box, y: snake2[0].y + direction2.y * box};
+            snake2.unshift(head2);
 
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <p>If you have any questions, feel free to reach out:</p>
-        <p>Email: <a href="mailto:info@depischolarship.org">info@depischolarship.org</a></p>
-    </section>
+            if (head2.x === head1.x && head2.y === head1.y) {
+                alert('Snake 2 caught Snake 1! Game Over');
+                document.location.reload();
+            } else {
+                snake2.pop();
+            }
 
-    <footer>
-        <p>&copy; 2024 DEPI Scholarship Track. All rights reserved.</p>
-    </footer>
+            // Update direction for snake 2
+            let dx = head1.x - head2.x;
+            let dy = head1.y - head2.y;
+            if (Math.abs(dx) > Math.abs(dy)) {
+                direction2.x = dx > 0 ? 1 : -1;
+                direction2.y = 0;
+            } else {
+                direction2.x = 0;
+                direction2.y = dy > 0 ? 1 : -1;
+            }
+        }
+
+        function changeDirection(event) {
+            switch(event.key) {
+                case 'ArrowUp':
+                    direction1 = {x: 0, y: -1};
+                    break;
+                case 'ArrowDown':
+                    direction1 = {x: 0, y: 1};
+                    break;
+                case 'ArrowLeft':
+                    direction1 = {x: -1, y: 0};
+                    break;
+                case 'ArrowRight':
+                    direction1 = {x: 1, y: 0};
+                    break;
+            }
+        }
+
+        document.addEventListener('keydown', changeDirection);
+        placeFood();
+        setInterval(draw, 100);
+    </script>
 </body>
 </html>
