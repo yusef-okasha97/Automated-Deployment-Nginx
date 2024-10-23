@@ -83,10 +83,15 @@
                 }
             }
 
+            // Check for overlap with snake 1 to avoid getting stuck
+            if (head2.x === head1.x && head2.y === head1.y) {
+                direction2 = {x: -direction1.x, y: -direction1.y}; // Reverse direction if too close
+            }
+
             // Remove tail from snake 2, slower speed
             if (snake2.length > 0) {
                 if (score1 % 2 === 0) {
-                    snake2.pop(); // Snake 2 moves slower; it only pops every second score of snake 1
+                    snake2.pop(); // Snake 2 moves slower
                 }
             }
 
