@@ -30,7 +30,6 @@
         let snake2 = [{x: 15 * box, y: 15 * box}];
         let food = {};
         let score1 = 0;
-        let score2 = 0;
         let direction1 = {x: 0, y: 0};
         let direction2 = {x: 0, y: 0};
 
@@ -72,12 +71,16 @@
             let head2 = {x: snake2[0].x + direction2.x * box, y: snake2[0].y + direction2.y * box};
             snake2.unshift(head2);
 
-            if (head2.x === head1.x && head2.y === head1.y) {
-                alert('Snake 2 caught Snake 1! Game Over');
-                document.location.reload();
-            } else {
-                snake2.pop();
+            // Check collision with snake 1
+            for (let i = 0; i < snake1.length; i++) {
+                if (head2.x === snake1[i].x && head2.y === snake1[i].y) {
+                    alert('Snake 2 caught Snake 1! Game Over');
+                    document.location.reload();
+                }
             }
+
+            // Remove tail from snake 2
+            snake2.pop();
 
             // Update direction for snake 2
             let dx = head1.x - head2.x;
