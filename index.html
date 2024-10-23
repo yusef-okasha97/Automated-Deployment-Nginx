@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game with Frame, Trials, and Title</title>
+    <title>Snake Game with Limited Trials</title>
     <style>
         body {
             margin: 0;
@@ -64,9 +64,16 @@
         let food;
         let score = 0;
         let trials = 0; // Number of trials (games played)
+        const maxTrials = 3; // Maximum number of trials
 
         // Initialize the game
         function initializeGame() {
+            if (trials >= maxTrials) {
+                alert('You have reached the maximum number of trials.');
+                clearInterval(gameInterval); // Stop the game loop
+                return; // Prevent further games
+            }
+
             snake = [{ x: 10, y: 10 }];
             dx = 1;
             dy = 0;
@@ -107,7 +114,7 @@
             ctx.fillText('Score: ' + score, 20, 30);
 
             // Draw trials (number of attempts)
-            ctx.fillText('Trials: ' + trials, 20, 60);
+            ctx.fillText('Trials: ' + trials + ' / ' + maxTrials, 20, 60);
         }
 
         function checkCollision() {
@@ -142,8 +149,14 @@
             if (checkCollision()) {
                 clearInterval(gameInterval);
                 alert('Game Over! Your score: ' + score);
-                initializeGame(); // Re-initialize the game for a new trial
-                gameInterval = setInterval(gameLoop, 100); // Restart the game loop
+
+                // If less than max trials, start the next trial
+                if (trials < maxTrials) {
+                    initializeGame(); // Re-initialize the game for a new trial
+                    gameInterval = setInterval(gameLoop, 100); // Restart the game loop
+                } else {
+                    alert('You have used all your trials. Game Over!');
+                }
             }
         }
 
