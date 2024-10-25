@@ -22,7 +22,7 @@
 
         #game-title {
             color: blue;
-            font-size: 36px;
+            font-size: 36px; /* Increased the font size */
             text-align: center;
             margin-bottom: 20px;
         }
@@ -36,6 +36,7 @@
 
 <body>
     <div id="game-container">
+        <!-- Adding the title at the top -->
         <div id="game-title">Digital Egypt Pioneers Initiative - DevOps Engineer</div>
         <canvas id="game-canvas"></canvas>
     </div>
@@ -52,7 +53,7 @@
             tileCountY = Math.floor(canvas.height / tileSize);
         }
 
-        const tileSize = 20;
+        const tileSize = 20; // Size of each tile (snake block)
         let tileCountX, tileCountY;
         resizeCanvas(); // Set initial size
 
@@ -62,73 +63,73 @@
         let dx, dy;
         let food;
         let score = 0;
-        let trials = localStorage.getItem('snakeGameTrials') ? parseInt(localStorage.getItem('snakeGameTrials')) : 0;
+        let trials = localStorage.getItem('snakeGameTrials') ? parseInt(localStorage.getItem('snakeGameTrials')) : 0; // Number of trials (games played)
         const maxTrials = 3; // Maximum number of trials
-        let timeLeft = 90; // 90 seconds for the timer
-        let speed = 100; // Initial speed in milliseconds
 
         // Initialize the game
         function initializeGame() {
             if (trials >= maxTrials) {
                 alert('You have reached the maximum number of trials.');
-                clearInterval(gameInterval);
-                return;
+                clearInterval(gameInterval); // Stop the game loop
+                return; // Prevent further games
             }
 
             snake = [{ x: 10, y: 10 }];
             dx = 1;
             dy = 0;
             score = 0;
-            trials++;
-            localStorage.setItem('snakeGameTrials', trials);
+            trials++; // Increment trials on each game start
+            localStorage.setItem('snakeGameTrials', trials); // Save the updated trials to local storage
 
             food = {
                 x: Math.floor(Math.random() * (tileCountX - 2)) + 1,
                 y: Math.floor(Math.random() * (tileCountY - 2)) + 1,
             };
-
-            // Reset timer and speed
-            timeLeft = 90;
-            speed = 100;
-            clearInterval(gameInterval);
-            gameInterval = setInterval(gameLoop, speed);
         }
 
         // Check trials on page load
         if (trials >= maxTrials) {
             alert('You have used all your trials. Please don\'t play again because now you load on the server. Leave a place for your other colleagues to try the game and tell us your opinion about the project in the comments and what we can add to it.');
         } else {
-            initializeGame();
+            initializeGame(); // Initialize the first game if trials are available
         }
 
         function draw() {
+            // Clear the canvas
             ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            // Draw frame/border
             ctx.strokeStyle = 'white';
             ctx.lineWidth = 4;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
+            // Draw snake
             ctx.fillStyle = 'green';
             for (let i = 0; i < snake.length; i++) {
                 ctx.fillRect(snake[i].x * tileSize, snake[i].y * tileSize, tileSize, tileSize);
             }
 
+            // Draw food
             ctx.fillStyle = 'red';
             ctx.fillRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
 
+            // Draw score
             ctx.font = '20px Arial';
             ctx.fillStyle = 'white';
             ctx.fillText('Score: ' + score, 20, 30);
+
+            // Draw trials (number of attempts)
             ctx.fillText('Trials: ' + trials + ' / ' + maxTrials, 20, 60);
-            ctx.fillText('Time Left: ' + timeLeft + 's', 20, 90);
         }
 
         function checkCollision() {
+            // Check collision with frame/borders (added 1 tile size to account for the frame)
             if (snake[0].x < 1 || snake[0].x >= tileCountX - 1 || snake[0].y < 1 || snake[0].y >= tileCountY - 1) {
                 return true;
             }
 
+            // Check collision with itself
             for (let i = 1; i < snake.length; i++) {
                 if (snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
                     return true;
@@ -141,65 +142,53 @@
         function update() {
             snake.unshift({ x: snake[0].x + dx, y: snake[0].y + dy });
 
+            // Check if snake eats the food
             if (snake[0].x === food.x && snake[0].y === food.y) {
                 score++;
-                food.x = Math.floor(Math.random() * (tileCountX - 2)) + 1;
+                food.x = Math.floor(Math.random() * (tileCountX - 2)) + 1; // Ensure food doesn't spawn on frame
                 food.y = Math.floor(Math.random() * (tileCountY - 2)) + 1;
-
-                // Increase speed
-                speed = Math.max(50, speed - 10); // Increase speed up to a limit
-                clearInterval(gameInterval);
-                gameInterval = setInterval(gameLoop, speed);
             } else {
-                snake.pop();
+                snake.pop(); // Remove the tail
             }
 
+            // End game if collision occurs
             if (checkCollision()) {
                 clearInterval(gameInterval);
                 alert('Game Over! Your score: ' + score);
+
+                // If less than max trials, start the next trial
                 if (trials < maxTrials) {
-                    initializeGame();
-                    gameInterval = setInterval(gameLoop, speed);
+                    initializeGame(); // Re-initialize the game for a new trial
+                    gameInterval = setInterval(gameLoop, 100); // Restart the game loop
                 } else {
+                    // Show the final alert message after all trials are used
                     alert('You have used all your trials. Game Over!\n' +
                         'Please don\'t play again in incognito mode because now you are loading on the server. ' +
                         'Leave a place for your other colleagues to try the game and tell us your opinion about the project in the comments and what we can add to it.');
                 }
             }
-
-            // Update timer
-            if (timeLeft > 0) {
-                timeLeft--;
-            } else {
-                clearInterval(gameInterval);
-                alert('Time\'s up! Your score: ' + score);
-                if (trials < maxTrials) {
-                    initializeGame();
-                    gameInterval = setInterval(gameLoop, speed);
-                } else {
-                    alert('You have used all your trials. Game Over!');
-                }
-            }
         }
 
+        // Game loop function to update and draw
         function gameLoop() {
             draw();
             update();
         }
 
-        let gameInterval = setInterval(gameLoop, speed);
+        let gameInterval = setInterval(gameLoop, 100); // Start the game loop
 
+        // Handle keyboard input for snake movement
         document.addEventListener('keydown', function (event) {
-            if (event.keyCode === 37 && dx !== 1) {
+            if (event.keyCode === 37 && dx !== 1) { // Left arrow
                 dx = -1;
                 dy = 0;
-            } else if (event.keyCode === 38 && dy !== 1) {
+            } else if (event.keyCode === 38 && dy !== 1) { // Up arrow
                 dx = 0;
                 dy = -1;
-            } else if (event.keyCode === 39 && dx !== -1) {
+            } else if (event.keyCode === 39 && dx !== -1) { // Right arrow
                 dx = 1;
                 dy = 0;
-            } else if (event.keyCode === 40 && dy !== -1) {
+            } else if (event.keyCode === 40 && dy !== -1) { // Down arrow
                 dx = 0;
                 dy = 1;
             }
