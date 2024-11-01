@@ -37,3 +37,4 @@ The Jenkinsfile is located at the root of the project:
 - Docker for containerization.
 - Prometheus to collect numeric metrics from services.
 - Grafana is used for visualizing the data.
+- Slack for sending the deployment notifications.
