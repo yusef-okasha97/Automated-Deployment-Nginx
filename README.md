@@ -1,4 +1,4 @@
-# Automated-Deployment-Nginx-Pipeline-with-Jenkins-and-Docker
+# Automated-Nginx-Deployment
 
 ![Automated Photo](automated.gif)
 
