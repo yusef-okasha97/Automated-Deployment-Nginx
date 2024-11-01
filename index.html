@@ -9,77 +9,144 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #222;
+            color: white;
+            overflow: hidden; /* Prevent scrolling */
         }
 
         #game-container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+            flex-grow: 1; /* Allow container to grow and fill the available space */
         }
 
         #game-title {
             color: blue;
-            font-size: 36px; /* Increased the font size */
+            font-size: 36px;
             text-align: center;
             margin-bottom: 20px;
         }
 
         #game-canvas {
-            border: 1px solid black;
+            border: 1px solid white;
             display: block;
+            /* Prevent canvas from scrolling */
+        }
+
+        .control-container {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            grid-template-rows: repeat(2, 60px);
+            gap: 10px;
+            margin-top: 20px;
+            position: fixed; /* Fixed position to keep the buttons visible */
+            bottom: 20px; /* Align at the bottom */
+        }
+
+        .control-button {
+            background-color: #444;
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            height: 60px; /* Ensure height consistency */
+        }
+
+        .control-button:hover {
+            background-color: #666;
+        }
+
+        #up {
+            grid-column: 2; /* Center the up button */
+        }
+
+        #down {
+            grid-column: 2; /* Center the down button */
+        }
+
+        #left {
+            grid-row: 2; /* Place left button in the second row */
+            grid-column: 1; /* Place in the first column */
+        }
+
+        #right {
+            grid-row: 2; /* Place right button in the second row */
+            grid-column: 3; /* Place in the third column */
+        }
+
+        @media (max-width: 600px) {
+            .control-button {
+                width: 60px;
+                height: 60px;
+                font-size: 20px; /* Adjust font size for smaller screens */
+            }
         }
     </style>
 </head>
 
 <body>
     <div id="game-container">
-        <!-- Adding the title at the top -->
         <div id="game-title">Digital Egypt Pioneers Initiative - DevOps Engineer</div>
         <canvas id="game-canvas"></canvas>
+        <div class="control-container">
+            <button class="control-button" id="left">←</button>
+            <button class="control-button" id="up">↑</button>
+            <button class="control-button" id="right">→</button>
+            <button class="control-button" id="down">↓</button>
+        </div>
     </div>
 
     <script>
         const canvas = document.getElementById('game-canvas');
         const ctx = canvas.getContext('2d');
 
-        // Set canvas size to fullscreen
         function resizeCanvas() {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight - 100; // Deduct 100px for the title space
+            canvas.height = window.innerHeight - 100; // Maintain some space for title
             tileCountX = Math.floor(canvas.width / tileSize);
             tileCountY = Math.floor(canvas.height / tileSize);
         }
 
-        const tileSize = 20; // Size of each tile (snake block)
+        const tileSize = 20;
         let tileCountX, tileCountY;
-        resizeCanvas(); // Set initial size
-
+        resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
         let snake;
         let dx, dy;
         let food;
         let score = 0;
-        let trials = localStorage.getItem('snakeGameTrials') ? parseInt(localStorage.getItem('snakeGameTrials')) : 0; // Number of trials (games played)
-        const maxTrials = 3; // Maximum number of trials
+        let trials = localStorage.getItem('snakeGameTrials') ? parseInt(localStorage.getItem('snakeGameTrials')) : 0;
+        const maxTrials = 3;
 
-        // Initialize the game
+        // Game speed
+        let gameSpeed = 100; // Default speed for desktop
+        if (window.innerWidth <= 600) { // Check if the device is mobile
+            gameSpeed = 200; // Slower speed for mobile
+        }
+
         function initializeGame() {
             if (trials >= maxTrials) {
                 alert('You have reached the maximum number of trials.');
-                clearInterval(gameInterval); // Stop the game loop
-                return; // Prevent further games
+                clearInterval(gameInterval);
+                return;
             }
 
             snake = [{ x: 10, y: 10 }];
             dx = 1;
             dy = 0;
             score = 0;
-            trials++; // Increment trials on each game start
-            localStorage.setItem('snakeGameTrials', trials); // Save the updated trials to local storage
+            trials++;
+            localStorage.setItem('snakeGameTrials', trials);
 
             food = {
                 x: Math.floor(Math.random() * (tileCountX - 2)) + 1,
@@ -87,49 +154,39 @@
             };
         }
 
-        // Check trials on page load
         if (trials >= maxTrials) {
-            alert('You have used all your trials. Please don\'t play again because now you load on the server. Leave a place for your other colleagues to try the game and tell us your opinion about the project in the comments and what we can add to it.');
+            alert('You have used all your trials. Please leave a place for your other colleagues to try the game and share your feedback.');
         } else {
-            initializeGame(); // Initialize the first game if trials are available
+            initializeGame();
         }
 
         function draw() {
-            // Clear the canvas
             ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Draw frame/border
             ctx.strokeStyle = 'white';
             ctx.lineWidth = 4;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-            // Draw snake
             ctx.fillStyle = 'green';
             for (let i = 0; i < snake.length; i++) {
                 ctx.fillRect(snake[i].x * tileSize, snake[i].y * tileSize, tileSize, tileSize);
             }
 
-            // Draw food
             ctx.fillStyle = 'red';
             ctx.fillRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
 
-            // Draw score
             ctx.font = '20px Arial';
             ctx.fillStyle = 'white';
             ctx.fillText('Score: ' + score, 20, 30);
-
-            // Draw trials (number of attempts)
             ctx.fillText('Trials: ' + trials + ' / ' + maxTrials, 20, 60);
         }
 
         function checkCollision() {
-            // Check collision with frame/borders (added 1 tile size to account for the frame)
             if (snake[0].x < 1 || snake[0].x >= tileCountX - 1 || snake[0].y < 1 || snake[0].y >= tileCountY - 1) {
                 return true;
             }
 
-            // Check collision with itself
             for (let i = 1; i < snake.length; i++) {
                 if (snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
                     return true;
@@ -142,56 +199,61 @@
         function update() {
             snake.unshift({ x: snake[0].x + dx, y: snake[0].y + dy });
 
-            // Check if snake eats the food
             if (snake[0].x === food.x && snake[0].y === food.y) {
                 score++;
-                food.x = Math.floor(Math.random() * (tileCountX - 2)) + 1; // Ensure food doesn't spawn on frame
+                food.x = Math.floor(Math.random() * (tileCountX - 2)) + 1;
                 food.y = Math.floor(Math.random() * (tileCountY - 2)) + 1;
             } else {
-                snake.pop(); // Remove the tail
+                snake.pop();
             }
 
-            // End game if collision occurs
             if (checkCollision()) {
                 clearInterval(gameInterval);
                 alert('Game Over! Your score: ' + score);
-
-                // If less than max trials, start the next trial
                 if (trials < maxTrials) {
-                    initializeGame(); // Re-initialize the game for a new trial
-                    gameInterval = setInterval(gameLoop, 100); // Restart the game loop
+                    initializeGame();
+                    gameInterval = setInterval(gameLoop, gameSpeed); // Use the adjusted game speed
                 } else {
-                    // Show the final alert message after all trials are used
-                    alert('You have used all your trials. Game Over!\n' +
-                        'Please don\'t play again in incognito mode because now you are loading on the server. ' +
-                        'Leave a place for your other colleagues to try the game and tell us your opinion about the project in the comments and what we can add to it.');
+                    alert('You have used all your trials. Game Over!');
                 }
             }
         }
 
-        // Game loop function to update and draw
         function gameLoop() {
             draw();
             update();
         }
 
-        let gameInterval = setInterval(gameLoop, 100); // Start the game loop
+        let gameInterval = setInterval(gameLoop, gameSpeed); // Start the game with the defined speed
 
-        // Handle keyboard input for snake movement
         document.addEventListener('keydown', function (event) {
-            if (event.keyCode === 37 && dx !== 1) { // Left arrow
+            if (event.keyCode === 37 && dx !== 1) {
                 dx = -1;
                 dy = 0;
-            } else if (event.keyCode === 38 && dy !== 1) { // Up arrow
+            } else if (event.keyCode === 38 && dy !== 1) {
                 dx = 0;
                 dy = -1;
-            } else if (event.keyCode === 39 && dx !== -1) { // Right arrow
+            } else if (event.keyCode === 39 && dx !== -1) {
                 dx = 1;
                 dy = 0;
-            } else if (event.keyCode === 40 && dy !== -1) { // Down arrow
+            } else if (event.keyCode === 40 && dy !== -1) {
                 dx = 0;
                 dy = 1;
             }
+        });
+
+        // Mobile controls
+        document.getElementById('left').addEventListener('click', function () {
+            if (dx !== 1) { dx = -1; dy = 0; }
+        });
+        document.getElementById('up').addEventListener('click', function () {
+            if (dy !== 1) { dx = 0; dy = -1; }
+        });
+        document.getElementById('right').addEventListener('click', function () {
+            if (dx !== -1) { dx = 1; dy = 0; }
+        });
+        document.getElementById('down').addEventListener('click', function () {
+            if (dy !== -1) { dx = 0; dy = 1; }
         });
     </script>
 </body>
