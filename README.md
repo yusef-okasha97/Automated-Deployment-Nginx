@@ -7,6 +7,9 @@ This repository contains the docker-compose and deployment setup for the **Nginx
 ## Table of Contents
 - [Overview](#overview)
 - [CI/CD Pipeline](#cicd-pipeline)
+- [promtheus](#promtheus)
+- [grafana](#grafana)
+- [slack](#slack)
 
 ## Overview
 
@@ -30,7 +33,11 @@ The Jenkinsfile is located at the root of the project:
 ### Ansible
   Ansible – Automating instance configuration and Jenkins agent setup
 
-## Getting Started
+### promtheus
+
+### grafana
+
+## slack
 
 ### Prerequisites
 - Jenkins for the CI/CD pipeline.
