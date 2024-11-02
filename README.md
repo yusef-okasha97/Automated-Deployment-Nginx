@@ -7,7 +7,7 @@
 - [CI/CD Pipeline](#cicd-pipeline)
 - [Doecker](#Doecker)
 - [Ansible](#Ansible)
-- [Monitoring with Prometheus and Grafana](#Monitoring with Prometheus and Grafana)
+- [Monitoring](#Monitoring)
 - [Slack Integration for Notifications](#Slack Integration for Notifications)
 - [Prerequisites](#Prerequisites)
 
@@ -49,7 +49,7 @@ The Jenkinsfile is located at the root of the project:
  - This approach ensures that all agents are consistently set up and reduces manual intervention for agent management.
  - `slave_playbook.yml`: Ansible – Automating instance configuration and Jenkins agent setup
 
-### Monitoring with Prometheus and Grafana
+### Monitoring
  - Prometheus is set up to collect and store performance metrics from Jenkins, allowing for in-depth monitoring of the pipeline's health and performance.
      - `prometheus.yml`: Defines the targets for prometheus.
  - Grafana visualizes these metrics, providing insightful dashboards that help identify potential bottlenecks and monitor resource usage across the CI/CD pipeline.
