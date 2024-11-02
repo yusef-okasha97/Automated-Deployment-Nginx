@@ -8,7 +8,7 @@
 - [Doecker](#Doecker)
 - [Ansible](#Ansible)
 - [Monitoring](#Monitoring)
-- [Slack Integration for Notifications](#Slack Integration for Notifications)
+- [Slack](#Slack)
 - [Prerequisites](#Prerequisites)
 
 
@@ -55,7 +55,7 @@ The Jenkinsfile is located at the root of the project:
  - Grafana visualizes these metrics, providing insightful dashboards that help identify potential bottlenecks and monitor resource usage across the CI/CD pipeline.
  
 
-### Slack Integration for Notifications 
+### Slack
  - The Jenkins setup is integrated with Slack to send notifications about the pipeline status. These notifications include updates on build successes, failures, and deployment completions, allowing teams to stay informed in real time. 
 
 ### Prerequisites
