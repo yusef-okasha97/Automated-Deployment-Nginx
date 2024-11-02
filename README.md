@@ -7,9 +7,11 @@ This repository contains the docker-compose and deployment setup for the **Nginx
 ## Table of Contents
 - [Overview](#overview)
 - [CI/CD Pipeline](#cicd-pipeline)
+- [Doecker](#Doecker)
+- [Ansible](#Ansible)
 - [promtheus](#promtheus)
 - [grafana](#grafana)
-- [slack](#slack)
+
 
 ## Overview
 
@@ -27,9 +29,13 @@ The Jenkins pipeline is designed to automate everything to application deploymen
 4.  Copy index.html to the Nginx Container.
 5.  send the deployment status via Slack.  
 
+- `Note`: you can install Jenkins with all dependencies from my docker hub **docker push yoyo7sniper97/jenkins:latest**  .
+ 
 The Jenkinsfile is located at the root of the project:
 - `Jenkinsfile`: Defines the pipeline stages for application deployment.
 
+### Doecker 
+- `docker-compose.yml`: used to create Nginx as a container and Map the local html directory to the container.
 
 ### Ansible
  - `slave_playbook.yml`: Ansible – Automating instance configuration and Jenkins agent setup
@@ -39,7 +45,6 @@ The Jenkinsfile is located at the root of the project:
 
 ### grafana
 
-## slack
 
 ### Prerequisites
 - Jenkins for the CI/CD pipeline.
