@@ -31,7 +31,7 @@ The Jenkinsfile is located at the root of the project:
 
 
 ### Ansible
-  Ansible – Automating instance configuration and Jenkins agent setup
+ - `slave_playbook.yml`: Ansible – Automating instance configuration and Jenkins agent setup
 
 ### promtheus
 
