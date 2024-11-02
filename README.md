@@ -15,13 +15,17 @@ This repository contains the docker-compose and deployment setup for the **Nginx
 
 ## Overview
 
-This project automates the deployment for **Nginx app**. The pipeline manages the entire lifecycle Trigger the change on the GitHub to application deployment on Vm.
-- `index.html`: containes the main project code.
+This project focuses on implementing a Continuous Integration and Continuous Deployment (CI/CD) pipeline using Jenkins, with integrated monitoring, automated notifications, and containerization to streamline the deployment process. The setup leverages various tools for automation, monitoring, and container management, ensuring smooth and efficient software delivery.
+
+- `index.html`: contains the main project code.
 
 
 ## CI/CD Pipeline
 
 ### Jenkins
+- Jenkins serves as the core automation server for this CI/CD pipeline. It automates build, test, and deployment processes, ensuring consistent and reliable delivery of application updates.
+- The Jenkins server is configured with jobs that handle the entire software lifecycle, from code integration to deployment..
+
 The Jenkins pipeline is designed to automate everything to application deployment. It performs the following steps:
 1.  Trigger the change on the GitHub.
 2.  Build Docker images.
