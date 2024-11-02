@@ -34,6 +34,7 @@ The Jenkinsfile is located at the root of the project:
  - `slave_playbook.yml`: Ansible – Automating instance configuration and Jenkins agent setup
 
 ### promtheus
+ - `prometheus.yml`: Defines the targets for prometheus.
 
 ### grafana
 
