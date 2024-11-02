@@ -10,7 +10,7 @@ This repository contains the docker-compose and deployment setup for the **Nginx
 - [Doecker](#Doecker)
 - [Ansible](#Ansible)
 - [promtheus](#promtheus)
-- [grafana](#grafana)
+- [Prerequisites](#Prerequisites)
 
 
 ## Overview
@@ -45,9 +45,6 @@ The Jenkinsfile is located at the root of the project:
 
 ### promtheus
  - `prometheus.yml`: Defines the targets for prometheus.
-
-### grafana
-
 
 ### Prerequisites
 - Jenkins for the CI/CD pipeline.
