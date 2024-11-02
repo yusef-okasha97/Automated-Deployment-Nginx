@@ -30,9 +30,9 @@ The Jenkins pipeline is designed to automate everything to application deploymen
 5.  send the deployment status via Slack.  
 
 - `Note`: you can install Jenkins as a container with all dependencies from my docker hub.
--
+--
 docker push yoyo7sniper97/jenkins:latest  
--
+--
  
 The Jenkinsfile is located at the root of the project:
 - `Jenkinsfile`: Defines the pipeline stages for application deployment.
