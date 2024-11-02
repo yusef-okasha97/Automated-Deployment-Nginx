@@ -14,6 +14,7 @@ This repository contains the docker-compose and deployment setup for the **Nginx
 ## Overview
 
 This project automates the deployment for **Nginx app**. The pipeline manages the entire lifecycle Trigger the change on the GitHub to application deployment on Vm.
+- `index.html`: containes the main project code.
 
 
 ## CI/CD Pipeline
