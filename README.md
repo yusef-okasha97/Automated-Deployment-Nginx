@@ -1,6 +1,6 @@
 # Automated-Nginx-Deployment
 
-![Automated Photo](automated.gif)
+![Automated Photo](.gif)
 
 This repository contains the docker-compose and deployment setup for the **Nginx app**
 
