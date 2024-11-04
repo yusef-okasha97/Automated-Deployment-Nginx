@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Snake Game with Limited Trials</title>
     <style>
         body {
@@ -95,7 +94,9 @@
 
 <body>
     <div id="game-container">
-        <div id="game-title">Digital Egypt Pioneers Initiative - DevOps Engineer</div>
+        <div id="game-title">
+            Digital Egypt Pioneers Initiative - DevOps Engineer
+        </div>
         <canvas id="game-canvas"></canvas>
         <div class="control-container">
             <button class="control-button" id="left">←</button>
@@ -106,8 +107,8 @@
     </div>
 
     <script>
-        const canvas = document.getElementById('game-canvas');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById("game-canvas");
+        const ctx = canvas.getContext("2d");
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -119,24 +120,27 @@
         const tileSize = 20;
         let tileCountX, tileCountY;
         resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener("resize", resizeCanvas);
 
         let snake;
         let dx, dy;
         let food;
         let score = 0;
-        let trials = localStorage.getItem('snakeGameTrials') ? parseInt(localStorage.getItem('snakeGameTrials')) : 0;
+        let trials = localStorage.getItem("snakeGameTrials")
+            ? parseInt(localStorage.getItem("snakeGameTrials"))
+            : 0;
         const maxTrials = 3;
 
         // Game speed
         let gameSpeed = 100; // Default speed for desktop
-        if (window.innerWidth <= 600) { // Check if the device is mobile
+        if (window.innerWidth <= 600) {
+            // Check if the device is mobile
             gameSpeed = 200; // Slower speed for mobile
         }
 
         function initializeGame() {
             if (trials >= maxTrials) {
-                alert('You have reached the maximum number of trials.');
+                alert("You have reached the maximum number of trials.");
                 clearInterval(gameInterval);
                 return;
             }
@@ -146,7 +150,7 @@
             dy = 0;
             score = 0;
             trials++;
-            localStorage.setItem('snakeGameTrials', trials);
+            localStorage.setItem("snakeGameTrials", trials);
 
             food = {
                 x: Math.floor(Math.random() * (tileCountX - 2)) + 1,
@@ -155,35 +159,47 @@
         }
 
         if (trials >= maxTrials) {
-            alert('You have used all your trials. Please leave a place for your other colleagues to try the game and share your feedback.');
+            alert(
+                "You have used all your trials. Please leave a place for your other colleagues to try the game and share your feedback."
+            );
         } else {
             initializeGame();
         }
 
         function draw() {
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = "black";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.strokeStyle = 'white';
+            ctx.strokeStyle = "white";
             ctx.lineWidth = 4;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = 'green';
+            ctx.fillStyle = "green";
             for (let i = 0; i < snake.length; i++) {
-                ctx.fillRect(snake[i].x * tileSize, snake[i].y * tileSize, tileSize, tileSize);
+                ctx.fillRect(
+                    snake[i].x * tileSize,
+                    snake[i].y * tileSize,
+                    tileSize,
+                    tileSize
+                );
             }
 
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = "red";
             ctx.fillRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
 
-            ctx.font = '20px Arial';
-            ctx.fillStyle = 'white';
-            ctx.fillText('Score: ' + score, 20, 30);
-            ctx.fillText('Trials: ' + trials + ' / ' + maxTrials, 20, 60);
+            ctx.font = "20px Arial";
+            ctx.fillStyle = "white";
+            ctx.fillText("Score: " + score, 20, 30);
+            ctx.fillText("Trials: " + trials + " / " + maxTrials, 20, 60);
         }
 
         function checkCollision() {
-            if (snake[0].x < 1 || snake[0].x >= tileCountX - 1 || snake[0].y < 1 || snake[0].y >= tileCountY - 1) {
+            if (
+                snake[0].x < 1 ||
+                snake[0].x >= tileCountX - 1 ||
+                snake[0].y < 1 ||
+                snake[0].y >= tileCountY - 1
+            ) {
                 return true;
             }
 
@@ -203,18 +219,25 @@
                 score++;
                 food.x = Math.floor(Math.random() * (tileCountX - 2)) + 1;
                 food.y = Math.floor(Math.random() * (tileCountY - 2)) + 1;
+
+                // Update game speed based on score
+                if (score % 3 === 0) { // Increase speed every 3 points
+                    gameSpeed = Math.max(50, gameSpeed - 10); // Decrease interval (increase speed)
+                    clearInterval(gameInterval);
+                    gameInterval = setInterval(gameLoop, gameSpeed);
+                }
             } else {
                 snake.pop();
             }
 
             if (checkCollision()) {
                 clearInterval(gameInterval);
-                alert('Game Over! Your score: ' + score);
+                alert("Game Over! Your score: " + score);
                 if (trials < maxTrials) {
                     initializeGame();
                     gameInterval = setInterval(gameLoop, gameSpeed); // Use the adjusted game speed
                 } else {
-                    alert('You have used all your trials. Game Over!');
+                    alert("You have used all your trials. Game Over!");
                 }
             }
         }
@@ -226,7 +249,7 @@
 
         let gameInterval = setInterval(gameLoop, gameSpeed); // Start the game with the defined speed
 
-        document.addEventListener('keydown', function (event) {
+        document.addEventListener("keydown", function (event) {
             if (event.keyCode === 37 && dx !== 1) {
                 dx = -1;
                 dy = 0;
@@ -243,19 +266,30 @@
         });
 
         // Mobile controls
-        document.getElementById('left').addEventListener('click', function () {
-            if (dx !== 1) { dx = -1; dy = 0; }
+        document.getElementById("left").addEventListener("click", function () {
+            if (dx !== 1) {
+                dx = -1;
+                dy = 0;
+            }
         });
-        document.getElementById('up').addEventListener('click', function () {
-            if (dy !== 1) { dx = 0; dy = -1; }
+        document.getElementById("up").addEventListener("click", function () {
+            if (dy !== 1) {
+                dx = 0;
+                dy = -1;
+            }
         });
-        document.getElementById('right').addEventListener('click', function () {
-            if (dx !== -1) { dx = 1; dy = 0; }
+        document.getElementById("right").addEventListener("click", function () {
+            if (dx !== -1) {
+                dx = 1;
+                dy = 0;
+            }
         });
-        document.getElementById('down').addEventListener('click', function () {
-            if (dy !== -1) { dx = 0; dy = 1; }
+        document.getElementById("down").addEventListener("click", function () {
+            if (dy !== -1) {
+                dx = 0;
+                dy = 1;
+            }
         });
     </script>
 </body>
-
 </html>
