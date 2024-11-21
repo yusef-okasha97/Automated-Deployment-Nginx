@@ -17,6 +17,8 @@
 This project focuses on implementing a Continuous Integration and Continuous Deployment (CI/CD) pipeline using Jenkins, with integrated monitoring, automated notifications, and containerization to streamline the deployment process. The setup leverages various tools for automation, monitoring, and container management, ensuring smooth and efficient software delivery.
 
 - `index.html`: contains the main project code.
+-    Live Demo: https://zhdt6x.csb.app/
+
 
 
 ## CI/CD Pipeline
