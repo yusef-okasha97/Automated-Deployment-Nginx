@@ -42,5 +42,11 @@ pipeline {
             slackSend(channel: 'nginx', message: "Build ${env.BUILD_NUMBER} failed!")
         }
     }
+        stage('SonarQube Analysis') {
+          def scannerHome = tool 'SonarScanner';
+          withSonarQubeEnv() {
+          sh "${scannerHome}/bin/sonar-scanner"
+    }
+
 }
 
