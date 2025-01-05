@@ -19,7 +19,7 @@ pipeline {
         stage('Run SonarQube Analysis (Optional)') {
             steps {
                 // Replace with your actual credentials IDs or use environment variables
-                withCredentials([usernamePassword(credentialsId: 'sonar-token', usernameVariable: 'SONAR_TOKEN', passwordVariable: 'SONAR_TOKEN')]) {
+                withCredentials([usernamePassword(credentialsId: 'sonar-token')]) {
                     sh '''
                         sonar-scanner \
                           -Dsonar.projectKey="Nginx" \
