@@ -23,8 +23,8 @@ pipeline {
                     sh '''
                         sonar-scanner \
                           -Dsonar.projectKey="Nginx" \
-                          -Dsonar.sources="src/main/index.html" \  # Adjust the path to your source code if needed
-                          -Dsonar.host.url="http://0.0.0.0:4040" \
+                          -Dsonar.sources="src/main/index.html"  # Adjust the path to your source code if needed
+                          -Dsonar.host.url="http://0.0.0.0:4040" 
                           -Dsonar.login="${SONAR_TOKEN}"
                     '''
                 }
