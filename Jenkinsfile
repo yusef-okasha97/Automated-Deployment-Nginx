@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        SONARQUBE = 'SonarQube'  // This should match the SonarQube server name in Jenkins configuration
+        SONAR_TOKEN = credentials('sonar-token')  // Your SonarQube token stored as a Jenkins secret
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
@@ -8,25 +13,26 @@ pipeline {
             }
         }
 
-        stage('Build Docker Images') {
+        stage('SonarQube Analysis') {
             steps {
                 script {
-                    sh 'docker-compose -f docker-compose.yml build'
+                    // Run SonarQube scanner to analyze the code
+                    withSonarQubeEnv(SONARQUBE) {
+                        sh '''#!/bin/bash
+                        sonar-scanner \
+                            -Dsonar.projectKey=Automated-Deployment-Nginx-Pipeline \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=http://your_sonarqube_server_url \
+                            -Dsonar.login=${SONAR_TOKEN}'''
+                    }
                 }
             }
         }
 
-        stage('Run SonarQube Analysis (Optional)') {
+        stage('Build Docker Images') {
             steps {
-                // Replace with your actual credentials IDs or use environment variables
-                withCredentials(credentialsId: 'sonar-token'){
-                    sh '''
-                        sonar-scanner \
-                          -Dsonar.projectKey="Nginx" \
-                          -Dsonar.sources="src/main/index.html"  # Adjust the path to your source code if needed
-                          -Dsonar.host.url="http://0.0.0.0:4040" 
-                          -Dsonar.login="${SONAR_TOKEN}"
-                    '''
+                script {
+                    sh 'docker-compose -f docker-compose.yml build'
                 }
             }
         }
@@ -43,7 +49,7 @@ pipeline {
             steps {
                 script {
                     // Replace 'nginx' with your actual container name
-                    sh 'docker cp index.html  nginx:/usr/share/nginx/html/index.html'
+                    sh 'docker cp index.html nginx:/usr/share/nginx/html/index.html'
                 }
             }
         }
