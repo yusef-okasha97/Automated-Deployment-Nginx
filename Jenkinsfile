@@ -4,6 +4,8 @@ pipeline {
     environment {
         SONARQUBE = 'SonarQubeServer'  // This should match the SonarQube server name in Jenkins configuration
         SONAR_TOKEN = credentials('sonar-token')  // Your SonarQube token stored as a Jenkins secret
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'  // Set the correct Java 17 path
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"  // Ensure Java 17 is used in the PATH
     }
 
     stages {
