@@ -22,7 +22,7 @@ pipeline {
                         sonar-scanner \
                             -Dsonar.projectKey=Nginx \
                             -Dsonar.sources=. \
-                            -Dsonar.host.url=http:0.0.0.0:4040 \
+                            -Dsonar.host.url=http://172.17.0.2:4040 \
                             -Dsonar.login=${SONAR_TOKEN}'''
                     }
                 }
