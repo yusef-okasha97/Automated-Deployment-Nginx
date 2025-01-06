@@ -20,9 +20,9 @@ pipeline {
                     withSonarQubeEnv(SONARQUBE) {
                         sh '''#!/bin/bash
                         sonar-scanner \
-                            -Dsonar.projectKey=Automated-Deployment-Nginx-Pipeline \
+                            -Dsonar.projectKey=Nginx \
                             -Dsonar.sources=. \
-                            -Dsonar.host.url=http://your_sonarqube_server_url \
+                            -Dsonar.host.url=http:0.0.0.0:4040 \
                             -Dsonar.login=${SONAR_TOKEN}'''
                     }
                 }
