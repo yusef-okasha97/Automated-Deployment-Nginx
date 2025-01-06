@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE = 'SonarQube'  // This should match the SonarQube server name in Jenkins configuration
+        SONARQUBE = 'SonarQubeServer'  // This should match the SonarQube server name in Jenkins configuration
         SONAR_TOKEN = credentials('sonar-token')  // Your SonarQube token stored as a Jenkins secret
     }
 
