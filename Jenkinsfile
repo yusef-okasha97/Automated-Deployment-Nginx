@@ -57,10 +57,10 @@ pipeline {
 
     post {
         success {
-            slackSend(channel: 'nginx', message: "Build ${env.BUILD_NUMBER} succeeded!")
+            sh ' echo succeeded '
         }
         failure {
-            slackSend(channel: 'nginx', message: "Build ${env.BUILD_NUMBER} failed!")
+            sh ' echo failed '
         }
     }
 }
