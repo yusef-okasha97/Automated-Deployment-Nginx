@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     // Check if Jenkins can connect to the SonarQube server
-                    sh "curl -I http://172.17.0.2:9000 || { echo 'Failed to reach SonarQube server'; exit 1; }"
+                    sh "curl -I http://172.17.0.5:9000 || { echo 'Failed to reach SonarQube server'; exit 1; }"
                 }
             }
         }
@@ -38,7 +38,7 @@ pipeline {
                         sonar-scanner \
                             -Dsonar.projectKey=Nginx \
                             -Dsonar.sources=. \
-                            -Dsonar.host.url=http://172.17.0.2:9000 \
+                            -Dsonar.host.url=http://172.17.0.5:9000 \
                             -Dsonar.login=${SONAR_TOKEN} || { echo 'SonarQube analysis failed'; exit 1; }
                         '''
                     }
