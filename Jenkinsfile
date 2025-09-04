@@ -5,22 +5,6 @@ pipeline {
         jdk 'jdk21'  // Use the JDK 17 tool configured in Jenkins' Global Tool Configuration
     }
 
-    environment {
-        SONARQUBE = 'SonarQubeServer'  // Your SonarQube server configuration
-        SONAR_TOKEN = credentials('sonar-token')  // SonarQube token
-    }
-
-    stages {
-        // Stage to check if Jenkins can reach SonarQube server
-        stage('Test SonarQube Connectivity') {
-            steps {
-                script {
-                    // Check if Jenkins can connect to the SonarQube server
-                    sh "curl -I http://172.17.0.5:9000 || { echo 'Failed to reach SonarQube server'; exit 1; }"
-                }
-            }
-        }
-
         // Stage to clone the Git repository
         stage('Clone Repository') {
             steps {
