@@ -3,9 +3,9 @@
 ![Automated Photo](automated.gif)
 
 ## Table of Contents
-- [Project Overview](#Project Overview)
+- [Project Overview](#project-overview)
 - [CI/CD Pipeline](#cicd-pipeline)
-- [Doecker](#Doecker)
+- [Docker](#docker)
 - [Ansible](#Ansible)
 - [Monitoring](#Monitoring)
 - [Slack](#Slack)
